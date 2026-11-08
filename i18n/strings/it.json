@@ -67,7 +67,7 @@
     "reading_title": "Leggere il risultato",
     "reading_p1": "La maggior parte degli adulti si colloca tra 200 e 300 ms in un semplice test visivo come questo. Lo schermo, il mouse o il touch screen e il browser aggiungono ciascuno qualche millisecondo, quindi confrontati con te stesso, sullo stesso dispositivo. Sonno, stanchezza, caffeina e ora del giorno influenzano il risultato.",
     "reading_p2": "Questo test misura un tempo di reazione semplice. Non è una diagnosi e non è un test clinico dell’attenzione.",
-    "embed_title": "Inserisci il test nel tuo sito",
+    "embed_title": "Inserisci il test sul tuo sito",
     "embed_intro": "Puoi mostrare gratis il test di reazione completo di upchin.app sulla tua pagina. È disponibile in 17 lingue: imposta `data-lang` (o `lang=` nell’indirizzo del frame) su {codes}.",
     "embed_script": "**Con lo script** ({file}), che adatta l’altezza del frame al contenuto:",
     "embed_html": "**Senza script**, se il tuo sito accetta solo HTML:",
