@@ -26,7 +26,7 @@ La maggior parte degli adulti si colloca tra 200 e 300 ms in un semplice test vi
 
 Questo test misura un tempo di reazione semplice. Non è una diagnosi e non è un test clinico dell’attenzione.
 
-## Inserisci il test nel tuo sito
+## Inserisci il test sul tuo sito
 
 Puoi mostrare gratis il test di reazione completo di upchin.app sulla tua pagina. È disponibile in 17 lingue: imposta `data-lang` (o `lang=` nell’indirizzo del frame) su `en`, `fr`, `de`, `es-MX`, `pt-BR`, `it`, `nl`, `pl`, `da`, `sv`, `ru`, `id`, `hi`, `ja`, `ko`, `zh-Hans`, `zh-HK`.
 

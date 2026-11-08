@@ -9,7 +9,7 @@ Testa online: https://kevinsarrazin.github.io/free-reaction-test-online-improve-
 Vänta tills fältet byter färg och klicka, tryck på skärmen eller på mellanslag så snabbt du kan. Efter tio försök får du:
 
 - **Genomsnitt**: din medeltid.
-- **Median**: mittvärdet, som ett enstaka misstag flyttar mindre än genomsnittet.
+- **Median**: mittvärdet, som påverkas mindre av ett enstaka misstag än genomsnittet.
 - **Snabbast**: ditt bästa försök.
 - **Spridning**: standardavvikelsen. Ju lägre, desto jämnare.
 - **Tjuvstarter**: klick innan färgen ändras. Försöket görs om.
