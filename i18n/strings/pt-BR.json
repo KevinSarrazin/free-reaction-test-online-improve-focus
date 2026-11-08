@@ -18,7 +18,7 @@
     "series_title": "Sua série",
     "mean": "Média",
     "median": "Mediana",
-    "median_hint": "O valor do meio. Um deslize mexe menos nela do que na média.",
+    "median_hint": "O valor do meio. Um deslize mexe menos nele do que na média.",
     "fastest": "Mais rápido",
     "spread": "Regularidade",
     "spread_hint": "Desvio-padrão. Quanto mais baixo, mais regulares são seus tempos.",
