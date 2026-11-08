@@ -26,4 +26,4 @@ This test measures a simple reaction time. It is not a diagnosis, and it is not 
 
 The [reaction time test on upchin.app](https://upchin.app/tools/reaction-time-test) is available in 17 languages. It keeps your history, explains each number and lets you share a result.
 
-It is made by the team behind [Upchin](https://upchin.app), an iPhone app that helps you cut down on screen time with Apple's Screen Time.
+This test is made by the team behind Upchin. In the words of its website: “Your apps are designed to keep you scrolling. Upchin is designed to give you your time back.” The iPhone app uses Apple's Screen Time to help you [reduce screen time](https://upchin.app), with friction at the right moment rather than a lecture.
