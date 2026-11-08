@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free Reaction Time Test Online</title>
+<meta name="description" content="A free reaction time test that runs in your browser. Ten trials, then your mean, median, fastest time and spread. No sign-up, nothing sent anywhere.">
+<link rel="canonical" href="https://upchin.app/tools/reaction-time-test">
+<style>
+  :root {
+    --bg: #E9EFF9;
+    --surface: #FFFFFF;
+    --ink: #0E1B3F;
+    --ink-2: #4A5677;
+    --accent: #1E43B8;
+    --go: #0F7FA0;
+    --wait: #2A3550;
+    --line: #D3DCEC;
+    --warn: #B5562E;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #070B18;
+      --surface: #161C2C;
+      --ink: #EEF3FC;
+      --ink-2: #A9B6D3;
+      --accent: #66B5FF;
+      --go: #27C6E6;
+      --wait: #1F2840;
+      --line: #2A3349;
+      --warn: #E0875F;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 32px 16px 48px; }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 8px; }
+  h2 { font-size: 1.25rem; margin: 32px 0 8px; }
+  p { margin: 0 0 12px; }
+  .lead { color: var(--ink-2); }
+  a { color: var(--accent); }
+
+  .stage {
+    position: relative;
+    margin-top: 20px;
+    height: 300px;
+    border-radius: 20px;
+    background: var(--wait);
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 16px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: background-color .08s linear;
+    outline-offset: 4px;
+  }
+  .stage[data-phase="go"] { background: var(--go); }
+  .stage[data-phase="early"] { background: var(--warn); }
+  .stage .big { font-size: 2.4rem; font-weight: 700; line-height: 1.1; }
+  .stage .small { margin-top: 8px; opacity: .85; }
+  .bar { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; color: var(--ink-2); font-size: .95rem; }
+  button.link { background: none; border: 0; padding: 0; color: var(--accent); font: inherit; cursor: pointer; text-decoration: underline; }
+
+  .readings { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; list-style: none; padding: 0; margin: 16px 0 0; }
+  .readings li { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 6px 8px; font-variant-numeric: tabular-nums; }
+  .readings .i { color: var(--ink-2); font-size: .8rem; display: block; }
+
+  .results { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .card.main { grid-column: 1 / -1; }
+  .card dt { color: var(--ink-2); font-size: .9rem; }
+  .card dd { margin: 2px 0 0; font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .card.main dd { font-size: 2.6rem; }
+  .card .hint { font-size: .85rem; font-weight: 400; color: var(--ink-2); margin-top: 4px; }
+
+  .history { list-style: none; padding: 0; margin: 8px 0 0; }
+  .history li { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding: 6px 0; font-variant-numeric: tabular-nums; }
+  .history .empty { color: var(--ink-2); border: 0; }
+
+  .cta { margin-top: 32px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  footer { margin-top: 32px; color: var(--ink-2); font-size: .9rem; }
+  .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 1.6rem; }
+    .stage { height: 240px; }
+    .readings { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .readings li { padding: 4px 5px; font-size: .9rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stage { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>Free reaction time test</h1>
+  <p class="lead">Wait for the panel to change color, then click or tap as fast as you can. Ten trials, then you get your mean, median, fastest time and spread. Nothing to install, nothing sent anywhere.</p>
+
+  <div class="stage" id="stage" data-phase="idle" tabindex="0" role="button" aria-describedby="stage-help">
+    <div class="big" id="stage-big">Click to start</div>
+    <div class="small" id="stage-small">You can also press Space or Enter.</div>
+  </div>
+  <p id="stage-help" class="visually-hidden">Press Space or Enter when the panel changes color.</p>
+  <p class="visually-hidden" role="status" id="announce"></p>
+
+  <div class="bar">
+    <span id="progress">Trial 0 of 10</span>
+    <button type="button" class="link" id="reset" hidden>Start over</button>
+  </div>
+
+  <ol class="readings" id="readings" aria-label="Time of each trial"></ol>
+
+  <h2>Your series</h2>
+  <dl class="results">
+    <div class="card main"><dt>Mean</dt><dd><span id="mean">—</span> ms</dd></div>
+    <div class="card"><dt>Median</dt><dd><span id="median">—</span> ms</dd><dd class="hint">The middle value. One slip moves it less than the mean.</dd></div>
+    <div class="card"><dt>Fastest</dt><dd><span id="fastest">—</span> ms</dd></div>
+    <div class="card"><dt>Spread</dt><dd><span id="spread">—</span> ms</dd><dd class="hint">Standard deviation. Lower means steadier.</dd></div>
+    <div class="card"><dt>False starts</dt><dd><span id="early">0</span></dd></div>
+  </dl>
+
+  <h2>Recent series</h2>
+  <ul class="history" id="history"><li class="empty">No series yet. Kept in this browser only.</li></ul>
+  <p><button type="button" class="link" id="clear" hidden>Clear history</button></p>
+
+  <h2>How to read your time</h2>
+  <p>Most adults land between 200 and 300 ms on a simple visual test like this one. Your device adds a little: the screen refresh, the mouse or touch screen, and the browser all take a few milliseconds, so compare yourself with yourself, on the same device.</p>
+  <p>Sleep, fatigue, caffeine and the time of day all shift the result. The spread often says more than the fastest time: a steady series means your attention held from one trial to the next.</p>
+  <p>This test measures a simple reaction time. It is not a diagnosis, and it is not a clinical attention test.</p>
+
+  <div class="cta">
+    <p><strong>Want the full version, in 17 languages?</strong> The <a href="https://upchin.app/tools/reaction-time-test">reaction time test on upchin.app</a> keeps your history, explains each number and lets you share a result.</p>
+    <p style="margin:0">It is made by the team behind <a href="https://upchin.app">Upchin</a>, an iPhone app that helps you cut down on screen time with Apple's Screen Time.</p>
+  </div>
+
+  <footer>
+    <p>Open source, a single HTML file, no tracking. Your results stay in your browser's local storage.</p>
+  </footer>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var TRIALS = 10;
+  var MIN_WAIT = 1200, MAX_WAIT = 3800;
+  var HISTORY_KEY = "reaction-test-history";
+  var HISTORY_MAX = 10;
+
+  var stage = document.getElementById("stage");
+  var big = document.getElementById("stage-big");
+  var small = document.getElementById("stage-small");
+  var announce = document.getElementById("announce");
+  var progress = document.getElementById("progress");
+  var resetBtn = document.getElementById("reset");
+  var clearBtn = document.getElementById("clear");
+  var readingsEl = document.getElementById("readings");
+  var historyEl = document.getElementById("history");
+  var out = {
+    mean: document.getElementById("mean"),
+    median: document.getElementById("median"),
+    fastest: document.getElementById("fastest"),
+    spread: document.getElementById("spread"),
+    early: document.getElementById("early")
+  };
+
+  // phase: idle | waiting | go | result | early | finished
+  var phase = "idle";
+  var times = [];
+  var falseStarts = 0;
+  var timer = null;
+  var goAt = 0;
+
+  for (var i = 1; i <= TRIALS; i++) {
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="i">' + i + '</span><span class="v">—</span>';
+    readingsEl.appendChild(li);
+  }
+
+  function setStage(p, bigText, smallText, spoken) {
+    phase = p;
+    stage.setAttribute("data-phase", p);
+    big.textContent = bigText;
+    small.textContent = smallText || "";
+    if (spoken) announce.textContent = spoken;
+  }
+
+  function startTrial() {
+    clearTimeout(timer);
+    setStage("waiting", "Wait for it…", "", "Wait for the color change.");
+    var delay = MIN_WAIT + Math.random() * (MAX_WAIT - MIN_WAIT);
+    timer = setTimeout(function () {
+      goAt = performance.now();
+      setStage("go", "Now!", "", "Now");
+    }, delay);
+  }
+
+  function round(n) { return Math.round(n); }
+
+  function stats(list) {
+    if (!list.length) return null;
+    var sorted = list.slice().sort(function (a, b) { return a - b; });
+    var sum = list.reduce(function (a, b) { return a + b; }, 0);
+    var mean = sum / list.length;
+    var mid = Math.floor(sorted.length / 2);
+    var median = sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+    var variance = list.reduce(function (a, b) { return a + (b - mean) * (b - mean); }, 0) / list.length;
+    return { mean: mean, median: median, fastest: sorted[0], spread: Math.sqrt(variance) };
+  }
+
+  function render() {
+    var cells = readingsEl.querySelectorAll(".v");
+    for (var i = 0; i < TRIALS; i++) cells[i].textContent = times[i] != null ? round(times[i]) : "—";
+    progress.textContent = "Trial " + times.length + " of " + TRIALS;
+    var s = stats(times);
+    out.mean.textContent = s ? round(s.mean) : "—";
+    out.median.textContent = s ? round(s.median) : "—";
+    out.fastest.textContent = s ? round(s.fastest) : "—";
+    out.spread.textContent = s && times.length > 1 ? round(s.spread) : "—";
+    out.early.textContent = falseStarts;
+    resetBtn.hidden = times.length === 0 && falseStarts === 0;
+  }
+
+  function act() {
+    if (phase === "idle" || phase === "result" || phase === "early") {
+      startTrial();
+    } else if (phase === "waiting") {
+      clearTimeout(timer);
+      falseStarts++;
+      render();
+      setStage("early", "Too soon", "Wait for the color change. Click to try this trial again.", "Too soon. Click to try again.");
+    } else if (phase === "go") {
+      var t = performance.now() - goAt;
+      times.push(t);
+      render();
+      if (times.length >= TRIALS) {
+        finish();
+      } else {
+        setStage("result", round(t) + " ms", "Click for the next trial.", round(t) + " milliseconds");
+      }
+    } else if (phase === "finished") {
+      resetSeries();
+      startTrial();
+    }
+  }
+
+  function finish() {
+    var s = stats(times);
+    setStage("finished", round(s.mean) + " ms", "Your mean over " + TRIALS + " trials. Click to run a new series.",
+      "Series complete. Mean " + round(s.mean) + " milliseconds.");
+    saveHistory(s);
+  }
+
+  function resetSeries() {
+    clearTimeout(timer);
+    times = [];
+    falseStarts = 0;
+    render();
+    setStage("idle", "Click to start", "You can also press Space or Enter.", "");
+  }
+
+  // History: per-browser convenience only. Storage may be unavailable.
+  function loadHistory() {
+    try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch (e) { return []; }
+  }
+  function saveHistory(s) {
+    var list = loadHistory();
+    list.unshift({ d: Date.now(), mean: round(s.mean), median: round(s.median), early: falseStarts });
+    list = list.slice(0, HISTORY_MAX);
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); } catch (e) {}
+    renderHistory(list);
+  }
+  function renderHistory(list) {
+    list = list || loadHistory();
+    historyEl.innerHTML = "";
+    if (!list.length) {
+      historyEl.innerHTML = '<li class="empty">No series yet. Kept in this browser only.</li>';
+      clearBtn.hidden = true;
+      return;
+    }
+    list.forEach(function (h) {
+      var li = document.createElement("li");
+      var date = new Date(h.d).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+      var left = document.createElement("span");
+      left.textContent = date;
+      var right = document.createElement("span");
+      right.textContent = "mean " + h.mean + " ms · median " + h.median + " ms" + (h.early ? " · " + h.early + " false start" + (h.early > 1 ? "s" : "") : "");
+      li.appendChild(left);
+      li.appendChild(right);
+      historyEl.appendChild(li);
+    });
+    clearBtn.hidden = false;
+  }
+
+  stage.addEventListener("pointerdown", function (e) {
+    if (e.button !== undefined && e.button !== 0) return;
+    e.preventDefault();
+    act();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.repeat) return;
+    if (e.key !== " " && e.key !== "Enter") return;
+    var tag = (document.activeElement && document.activeElement.tagName) || "";
+    if (tag === "BUTTON" || tag === "A") return;
+    e.preventDefault();
+    act();
+  });
+  resetBtn.addEventListener("click", resetSeries);
+  clearBtn.addEventListener("click", function () {
+    try { localStorage.removeItem(HISTORY_KEY); } catch (e) {}
+    renderHistory([]);
+  });
+
+  render();
+  renderHistory();
+})();
+</script>
+</body>
+</html>
