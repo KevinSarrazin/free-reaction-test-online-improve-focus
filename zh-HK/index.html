@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>免費網上反應時間測試</title>
+<meta name="description" content="在瀏覽器裡就能測的免費反應時間測試：測 10 次，得出平均值、中位數、最快時間和波動。無需註冊，不上傳任何資料。">
+<link rel="alternate" hreflang="en" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/">
+<link rel="alternate" hreflang="fr" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/fr/">
+<link rel="alternate" hreflang="de" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/de/">
+<link rel="alternate" hreflang="es-MX" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/es-MX/">
+<link rel="alternate" hreflang="pt-BR" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/pt-BR/">
+<link rel="alternate" hreflang="it" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/it/">
+<link rel="alternate" hreflang="nl" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/nl/">
+<link rel="alternate" hreflang="pl" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/pl/">
+<link rel="alternate" hreflang="da" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/da/">
+<link rel="alternate" hreflang="sv" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/sv/">
+<link rel="alternate" hreflang="ru" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/ru/">
+<link rel="alternate" hreflang="id" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/id/">
+<link rel="alternate" hreflang="hi" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/hi/">
+<link rel="alternate" hreflang="ja" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/ja/">
+<link rel="alternate" hreflang="ko" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/ko/">
+<link rel="alternate" hreflang="zh-Hans" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/zh-Hans/">
+<link rel="alternate" hreflang="zh-HK" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/zh-HK/">
+<link rel="alternate" hreflang="x-default" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/">
+<style>
+  :root {
+    --bg: #E9EFF9;
+    --surface: #FFFFFF;
+    --ink: #0E1B3F;
+    --ink-2: #4A5677;
+    --accent: #1E43B8;
+    --go: #0F7FA0;
+    --wait: #2A3550;
+    --line: #D3DCEC;
+    --warn: #B5562E;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #070B18;
+      --surface: #161C2C;
+      --ink: #EEF3FC;
+      --ink-2: #A9B6D3;
+      --accent: #66B5FF;
+      --go: #27C6E6;
+      --wait: #1F2840;
+      --line: #2A3349;
+      --warn: #E0875F;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans", sans-serif;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 32px 16px 48px; }
+  h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 8px; }
+  h2 { font-size: 1.25rem; margin: 32px 0 8px; }
+  p { margin: 0 0 12px; }
+  .lead { color: var(--ink-2); }
+  a { color: var(--accent); }
+
+  .stage {
+    position: relative;
+    margin-top: 20px;
+    height: 300px;
+    border-radius: 20px;
+    background: var(--wait);
+    color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 16px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    transition: background-color .08s linear;
+    outline-offset: 4px;
+  }
+  .stage[data-phase="go"] { background: var(--go); }
+  .stage[data-phase="early"] { background: var(--warn); }
+  .stage .big { font-size: 2.4rem; font-weight: 700; line-height: 1.1; }
+  .stage .small { margin-top: 8px; opacity: .85; }
+  .bar { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; color: var(--ink-2); font-size: .95rem; }
+  button.link { background: none; border: 0; padding: 0; color: var(--accent); font: inherit; cursor: pointer; text-decoration: underline; }
+
+  .readings { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; list-style: none; padding: 0; margin: 16px 0 0; }
+  .readings li { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 6px 8px; font-variant-numeric: tabular-nums; }
+  .readings .i { color: var(--ink-2); font-size: .8rem; display: block; }
+
+  .results { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+  .card.main { grid-column: 1 / -1; }
+  .card dt { color: var(--ink-2); font-size: .9rem; }
+  .card dd { margin: 2px 0 0; font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .card.main dd { font-size: 2.6rem; }
+  .card .hint { font-size: .85rem; font-weight: 400; color: var(--ink-2); margin-top: 4px; }
+
+  .history { list-style: none; padding: 0; margin: 8px 0 0; }
+  .history li { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line); padding: 6px 0; font-variant-numeric: tabular-nums; }
+  .history .empty { color: var(--ink-2); border: 0; }
+
+  .cta { margin-top: 32px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+  footer { margin-top: 32px; color: var(--ink-2); font-size: .9rem; }
+  .langs { display: flex; flex-wrap: wrap; gap: 6px 14px; list-style: none; padding: 0; margin: 12px 0 0; }
+  .langs a[aria-current] { color: var(--ink); font-weight: 700; text-decoration: none; }
+  .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+  @media (max-width: 480px) {
+    h1 { font-size: 1.6rem; }
+    .stage { height: 240px; }
+    .stage .big { font-size: 2rem; }
+    .readings { gap: 6px; }
+    .readings li { padding: 4px 5px; font-size: .9rem; }
+    .results { grid-template-columns: 1fr; }
+    .history li { flex-direction: column; gap: 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .stage { transition: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>免費反應時間測試</h1>
+  <p class="lead">等面板變色，然後盡快點擊或輕觸螢幕。測 10 次，就能看到你的平均值、中位數、最快時間和波動。無需安裝，任何資料都不會傳送出去。</p>
+
+  <div class="stage" id="stage" data-phase="idle" tabindex="0" role="button" aria-describedby="stage-help">
+    <div class="big" id="stage-big">點擊開始</div>
+    <div class="small" id="stage-small">也可以按空白鍵或 Enter 鍵。</div>
+  </div>
+  <p id="stage-help" class="visually-hidden">面板變色時，按空白鍵或 Enter 鍵。</p>
+  <p class="visually-hidden" role="status" id="announce"></p>
+
+  <div class="bar">
+    <span id="progress"></span>
+    <button type="button" class="link" id="reset" hidden>重新開始</button>
+  </div>
+
+  <ol class="readings" id="readings" aria-label="每次的時間"></ol>
+
+  <h2>本輪結果</h2>
+  <dl class="results">
+    <div class="card main"><dt>平均值</dt><dd><span id="mean">—</span> ms</dd></div>
+    <div class="card"><dt>中位數</dt><dd><span id="median">—</span> ms</dd><dd class="hint">居中的那個值。一次失誤對它的影響，比對平均值小。</dd></div>
+    <div class="card"><dt>最快</dt><dd><span id="fastest">—</span> ms</dd></div>
+    <div class="card"><dt>波動</dt><dd><span id="spread">—</span> ms</dd><dd class="hint">標準差。數值越小，反應越穩定。</dd></div>
+    <div class="card"><dt>搶跑</dt><dd><span id="early">0</span></dd></div>
+  </dl>
+
+  <h2>最近幾輪</h2>
+  <ul class="history" id="history"><li class="empty">還沒有記錄。記錄只儲存在這個瀏覽器裡。</li></ul>
+  <p><button type="button" class="link" id="clear" hidden>清除歷史記錄</button></p>
+
+  <h2>如何解讀你的時間</h2>
+  <p>在這類簡單的視覺測試中，大多數成年人的反應時間在 200 至 300 ms 之間。裝置本身也會增加一點時間：螢幕刷新、滑鼠或觸控式螢幕、瀏覽器都會佔用幾毫秒，所以請在同一部裝置上，和自己比較。</p>
+  <p>睡眠、疲勞、咖啡因和一天中的時段都會影響結果。波動往往比最快時間更能說明問題：一輪結果穩定，說明你的注意力從一次到下一次都保持住了。</p>
+  <p>這個測試測的是簡單反應時間。它不是診斷，也不是臨床注意力測試。</p>
+
+  <div class="cta">
+    <p><strong>想用支援 17 種語言的完整版嗎？</strong> <a href="https://upchin.app/zh-HK/tools/reaction-time-test">upchin.app 上的反應時間測試</a>會保留你的歷史記錄，解釋每個數值，還能分享結果。</p>
+    <p style="margin:0">它由 <a href="https://upchin.app/zh-HK">Upchin</a> 團隊打造。這款 iPhone App 借助 Apple 的螢幕使用時間功能，幫你少玩一會兒手機。</p>
+  </div>
+
+  <footer>
+    <p>開源，只有一個 HTML 檔案，沒有任何追蹤。結果只儲存在瀏覽器的本機儲存空間。</p>
+    <nav aria-label="語言">
+      <ul class="langs"><li><a href=".././" hreflang="en" lang="en">English</a></li><li><a href="../fr/" hreflang="fr" lang="fr">Français</a></li><li><a href="../de/" hreflang="de" lang="de">Deutsch</a></li><li><a href="../es-MX/" hreflang="es-MX" lang="es-MX">Español (México)</a></li><li><a href="../pt-BR/" hreflang="pt-BR" lang="pt-BR">Português (Brasil)</a></li><li><a href="../it/" hreflang="it" lang="it">Italiano</a></li><li><a href="../nl/" hreflang="nl" lang="nl">Nederlands</a></li><li><a href="../pl/" hreflang="pl" lang="pl">Polski</a></li><li><a href="../da/" hreflang="da" lang="da">Dansk</a></li><li><a href="../sv/" hreflang="sv" lang="sv">Svenska</a></li><li><a href="../ru/" hreflang="ru" lang="ru">Русский</a></li><li><a href="../id/" hreflang="id" lang="id">Bahasa Indonesia</a></li><li><a href="../hi/" hreflang="hi" lang="hi">हिन्दी</a></li><li><a href="../ja/" hreflang="ja" lang="ja">日本語</a></li><li><a href="../ko/" hreflang="ko" lang="ko">한국어</a></li><li><a href="../zh-Hans/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a></li><li><a href="../zh-HK/" hreflang="zh-HK" lang="zh-HK" aria-current="page">繁體中文（香港）</a></li></ul>
+    </nav>
+  </footer>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var T = {"unit": "ms", "stage_start": "點擊開始", "stage_start_hint": "也可以按空白鍵或 Enter 鍵。", "progress": "{n} / {total} 次", "history_empty": "還沒有記錄。記錄只儲存在這個瀏覽器裡。", "history_line": "平均值 {mean} ms · 中位數 {median} ms", "history_false": "搶跑 {n} 次", "waiting": "別急……", "now": "就是現在！", "spoken_wait": "等待顏色變化。", "spoken_now": "現在", "too_soon": "太早了", "too_soon_hint": "等顏色變了再點。點擊重做這一次。", "spoken_too_soon": "太早了。點擊重試。", "next_hint": "點擊進行下一次。", "spoken_ms": "{ms} 毫秒", "finished_hint": "這是 {total} 次的平均值。點擊再測一輪。", "spoken_finished": "本輪完成。平均 {ms} 毫秒。"};
+  var TRIALS = 10;
+  var MIN_WAIT = 1200, MAX_WAIT = 3800;
+  var HISTORY_KEY = "reaction-test-history";
+  var HISTORY_MAX = 10;
+  var LANG = document.documentElement.lang || "en";
+
+  function t(key, values) {
+    var s = T[key] || "";
+    if (values) {
+      Object.keys(values).forEach(function (k) { s = s.split("{" + k + "}").join(String(values[k])); });
+    }
+    return s;
+  }
+
+  var stage = document.getElementById("stage");
+  var big = document.getElementById("stage-big");
+  var small = document.getElementById("stage-small");
+  var announce = document.getElementById("announce");
+  var progress = document.getElementById("progress");
+  var resetBtn = document.getElementById("reset");
+  var clearBtn = document.getElementById("clear");
+  var readingsEl = document.getElementById("readings");
+  var historyEl = document.getElementById("history");
+  var out = {
+    mean: document.getElementById("mean"),
+    median: document.getElementById("median"),
+    fastest: document.getElementById("fastest"),
+    spread: document.getElementById("spread"),
+    early: document.getElementById("early")
+  };
+
+  // phase: idle | waiting | go | result | early | finished
+  var phase = "idle";
+  var times = [];
+  var falseStarts = 0;
+  var timer = null;
+  var goAt = 0;
+
+  for (var i = 1; i <= TRIALS; i++) {
+    var li = document.createElement("li");
+    li.innerHTML = '<span class="i">' + i + '</span><span class="v">—</span>';
+    readingsEl.appendChild(li);
+  }
+
+  function setStage(p, bigText, smallText, spoken) {
+    phase = p;
+    stage.setAttribute("data-phase", p);
+    big.textContent = bigText;
+    small.textContent = smallText || "";
+    if (spoken) announce.textContent = spoken;
+  }
+
+  function startTrial() {
+    clearTimeout(timer);
+    setStage("waiting", t("waiting"), "", t("spoken_wait"));
+    var delay = MIN_WAIT + Math.random() * (MAX_WAIT - MIN_WAIT);
+    timer = setTimeout(function () {
+      goAt = performance.now();
+      setStage("go", t("now"), "", t("spoken_now"));
+    }, delay);
+  }
+
+  function round(n) { return Math.round(n); }
+
+  function stats(list) {
+    if (!list.length) return null;
+    var sorted = list.slice().sort(function (a, b) { return a - b; });
+    var sum = list.reduce(function (a, b) { return a + b; }, 0);
+    var mean = sum / list.length;
+    var mid = Math.floor(sorted.length / 2);
+    var median = sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+    var variance = list.reduce(function (a, b) { return a + (b - mean) * (b - mean); }, 0) / list.length;
+    return { mean: mean, median: median, fastest: sorted[0], spread: Math.sqrt(variance) };
+  }
+
+  function render() {
+    var cells = readingsEl.querySelectorAll(".v");
+    for (var i = 0; i < TRIALS; i++) cells[i].textContent = times[i] != null ? round(times[i]) : "—";
+    progress.textContent = t("progress", { n: times.length, total: TRIALS });
+    var s = stats(times);
+    out.mean.textContent = s ? round(s.mean) : "—";
+    out.median.textContent = s ? round(s.median) : "—";
+    out.fastest.textContent = s ? round(s.fastest) : "—";
+    out.spread.textContent = s && times.length > 1 ? round(s.spread) : "—";
+    out.early.textContent = falseStarts;
+    resetBtn.hidden = times.length === 0 && falseStarts === 0;
+  }
+
+  function act() {
+    if (phase === "idle" || phase === "result" || phase === "early") {
+      startTrial();
+    } else if (phase === "waiting") {
+      clearTimeout(timer);
+      falseStarts++;
+      render();
+      setStage("early", t("too_soon"), t("too_soon_hint"), t("spoken_too_soon"));
+    } else if (phase === "go") {
+      var ms = performance.now() - goAt;
+      times.push(ms);
+      render();
+      if (times.length >= TRIALS) {
+        finish();
+      } else {
+        setStage("result", round(ms) + " " + t("unit"), t("next_hint"), t("spoken_ms", { ms: round(ms) }));
+      }
+    } else if (phase === "finished") {
+      resetSeries();
+      startTrial();
+    }
+  }
+
+  function finish() {
+    var s = stats(times);
+    setStage("finished", round(s.mean) + " " + t("unit"), t("finished_hint", { total: TRIALS }),
+      t("spoken_finished", { ms: round(s.mean) }));
+    saveHistory(s);
+  }
+
+  function resetSeries() {
+    clearTimeout(timer);
+    times = [];
+    falseStarts = 0;
+    render();
+    setStage("idle", t("stage_start"), t("stage_start_hint"), "");
+  }
+
+  // History: per-browser convenience only. Storage may be unavailable.
+  function loadHistory() {
+    try { return JSON.parse(localStorage.getItem(HISTORY_KEY)) || []; } catch (e) { return []; }
+  }
+  function saveHistory(s) {
+    var list = loadHistory();
+    list.unshift({ d: Date.now(), mean: round(s.mean), median: round(s.median), early: falseStarts });
+    list = list.slice(0, HISTORY_MAX);
+    try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list)); } catch (e) {}
+    renderHistory(list);
+  }
+  function renderHistory(list) {
+    list = list || loadHistory();
+    historyEl.innerHTML = "";
+    if (!list.length) {
+      var empty = document.createElement("li");
+      empty.className = "empty";
+      empty.textContent = t("history_empty");
+      historyEl.appendChild(empty);
+      clearBtn.hidden = true;
+      return;
+    }
+    list.forEach(function (h) {
+      var li = document.createElement("li");
+      var date;
+      try { date = new Date(h.d).toLocaleString(LANG, { dateStyle: "medium", timeStyle: "short" }); }
+      catch (e) { date = new Date(h.d).toLocaleString(); }
+      var left = document.createElement("span");
+      left.textContent = date;
+      var right = document.createElement("span");
+      right.textContent = t("history_line", { mean: h.mean, median: h.median }) + (h.early ? " · " + t("history_false", { n: h.early }) : "");
+      li.appendChild(left);
+      li.appendChild(right);
+      historyEl.appendChild(li);
+    });
+    clearBtn.hidden = false;
+  }
+
+  stage.addEventListener("pointerdown", function (e) {
+    if (e.button !== undefined && e.button !== 0) return;
+    e.preventDefault();
+    act();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.repeat) return;
+    if (e.key !== " " && e.key !== "Enter") return;
+    var tag = (document.activeElement && document.activeElement.tagName) || "";
+    if (tag === "BUTTON" || tag === "A") return;
+    e.preventDefault();
+    act();
+  });
+  resetBtn.addEventListener("click", resetSeries);
+  clearBtn.addEventListener("click", function () {
+    try { localStorage.removeItem(HISTORY_KEY); } catch (e) {}
+    renderHistory([]);
+  });
+
+  render();
+  renderHistory();
+})();
+</script>
+</body>
+</html>
