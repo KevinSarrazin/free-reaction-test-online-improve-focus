@@ -1,6 +1,10 @@
 # Free reaction test online
 
+Other languages: [Français](README.fr.md) · [Deutsch](README.de.md) · [Español (México)](README.es-MX.md) · [Português (Brasil)](README.pt-BR.md) · [Italiano](README.it.md) · [Nederlands](README.nl.md) · [Polski](README.pl.md) · [Dansk](README.da.md) · [Svenska](README.sv.md) · [Русский](README.ru.md) · [Bahasa Indonesia](README.id.md) · [हिन्दी](README.hi.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [简体中文](README.zh-Hans.md) · [繁體中文（香港）](README.zh-HK.md)
+
 A free reaction time test that runs in your browser, in a single HTML file.
+
+Try it online: https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/
 
 Wait for the panel to change color, then click, tap or press Space as fast as you can. After ten trials you get:
 
@@ -24,7 +28,7 @@ This test measures a simple reaction time. It is not a diagnosis, and it is not 
 
 ## Embed the test on your website
 
-You can show the full reaction time test from upchin.app on your own page, free. It is available in 17 languages: set `data-lang` (or `lang=` in the frame address) to `en`, `fr`, `de`, `es-MX`, `pt-BR`, `it`, `nl`, `pl`, `da`, `sv`, `ru`, `id`, `hi`, `ja`, `ko`, `zh-Hans` or `zh-HK`.
+You can show the full reaction time test from upchin.app on your own page, free. It is available in 17 languages: set `data-lang` (or `lang=` in the frame address) to `en`, `fr`, `de`, `es-MX`, `pt-BR`, `it`, `nl`, `pl`, `da`, `sv`, `ru`, `id`, `hi`, `ja`, `ko`, `zh-Hans`, `zh-HK`.
 
 **With the script** ([`reaction-time-test-embed.js`](reaction-time-test-embed.js)), which adjusts the height of the frame to its content:
 
@@ -48,4 +52,4 @@ Please keep the credit line below the test. The script adds the frame next to it
 
 The [reaction time test on upchin.app](https://upchin.app/tools/reaction-time-test) is available in 17 languages. It keeps your history, explains each number and lets you share a result.
 
-This test is made by the team behind Upchin. In the words of its website: “Your apps are designed to keep you scrolling. Upchin is designed to give you your time back.” The iPhone app uses Apple's Screen Time to help you [reduce screen time](https://upchin.app), with friction at the right moment rather than a lecture.
+This test is made by the team behind Upchin. In the words of its website: “Your apps are designed to keep you scrolling. Upchin is designed to give you your time back.” The iPhone app uses Apple's Screen Time to help you [reduce screen time](https://upchin.app/), with friction at the right moment rather than a lecture.

@@ -5,6 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Free Reaction Time Test Online</title>
 <meta name="description" content="A free reaction time test that runs in your browser. Ten trials, then your mean, median, fastest time and spread. No sign-up, nothing sent anywhere.">
+<link rel="alternate" hreflang="en" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/">
+<link rel="alternate" hreflang="fr" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/fr/">
+<link rel="alternate" hreflang="de" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/de/">
+<link rel="alternate" hreflang="es-MX" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/es-MX/">
+<link rel="alternate" hreflang="pt-BR" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/pt-BR/">
+<link rel="alternate" hreflang="it" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/it/">
+<link rel="alternate" hreflang="nl" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/nl/">
+<link rel="alternate" hreflang="pl" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/pl/">
+<link rel="alternate" hreflang="da" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/da/">
+<link rel="alternate" hreflang="sv" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/sv/">
+<link rel="alternate" hreflang="ru" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/ru/">
+<link rel="alternate" hreflang="id" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/id/">
+<link rel="alternate" hreflang="hi" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/hi/">
+<link rel="alternate" hreflang="ja" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/ja/">
+<link rel="alternate" hreflang="ko" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/ko/">
+<link rel="alternate" hreflang="zh-Hans" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/zh-Hans/">
+<link rel="alternate" hreflang="zh-HK" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/zh-HK/">
+<link rel="alternate" hreflang="x-default" href="https://kevinsarrazin.github.io/free-reaction-test-online-improve-focus/">
 <style>
   :root {
     --bg: #E9EFF9;
@@ -35,7 +53,7 @@
     margin: 0;
     background: var(--bg);
     color: var(--ink);
-    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font: 16px/1.55 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, "Noto Sans", sans-serif;
   }
   main { max-width: 720px; margin: 0 auto; padding: 32px 16px 48px; }
   h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 8px; }
@@ -84,18 +102,23 @@
   .card .hint { font-size: .85rem; font-weight: 400; color: var(--ink-2); margin-top: 4px; }
 
   .history { list-style: none; padding: 0; margin: 8px 0 0; }
-  .history li { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding: 6px 0; font-variant-numeric: tabular-nums; }
+  .history li { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line); padding: 6px 0; font-variant-numeric: tabular-nums; }
   .history .empty { color: var(--ink-2); border: 0; }
 
   .cta { margin-top: 32px; background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
   footer { margin-top: 32px; color: var(--ink-2); font-size: .9rem; }
+  .langs { display: flex; flex-wrap: wrap; gap: 6px 14px; list-style: none; padding: 0; margin: 12px 0 0; }
+  .langs a[aria-current] { color: var(--ink); font-weight: 700; text-decoration: none; }
   .visually-hidden { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
   @media (max-width: 480px) {
     h1 { font-size: 1.6rem; }
     .stage { height: 240px; }
-    .readings { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .stage .big { font-size: 2rem; }
+    .readings { gap: 6px; }
     .readings li { padding: 4px 5px; font-size: .9rem; }
+    .results { grid-template-columns: 1fr; }
+    .history li { flex-direction: column; gap: 0; }
   }
   @media (prefers-reduced-motion: reduce) {
     .stage { transition: none; }
@@ -115,7 +138,7 @@
   <p class="visually-hidden" role="status" id="announce"></p>
 
   <div class="bar">
-    <span id="progress">Trial 0 of 10</span>
+    <span id="progress"></span>
     <button type="button" class="link" id="reset" hidden>Start over</button>
   </div>
 
@@ -141,21 +164,34 @@
 
   <div class="cta">
     <p><strong>Want the full version, in 17 languages?</strong> The <a href="https://upchin.app/tools/reaction-time-test">reaction time test on upchin.app</a> keeps your history, explains each number and lets you share a result.</p>
-    <p style="margin:0">It is made by the team behind <a href="https://upchin.app">Upchin</a>, an iPhone app that helps you cut down on screen time with Apple's Screen Time.</p>
+    <p style="margin:0">It is made by the team behind <a href="https://upchin.app/">Upchin</a>, an iPhone app that helps you cut down on screen time with Apple&#x27;s Screen Time.</p>
   </div>
 
   <footer>
-    <p>Open source, a single HTML file, no tracking. Your results stay in your browser's local storage.</p>
+    <p>Open source, a single HTML file, no tracking. Your results stay in your browser&#x27;s local storage.</p>
+    <nav aria-label="Language">
+      <ul class="langs"><li><a href="./" hreflang="en" lang="en" aria-current="page">English</a></li><li><a href="fr/" hreflang="fr" lang="fr">Français</a></li><li><a href="de/" hreflang="de" lang="de">Deutsch</a></li><li><a href="es-MX/" hreflang="es-MX" lang="es-MX">Español (México)</a></li><li><a href="pt-BR/" hreflang="pt-BR" lang="pt-BR">Português (Brasil)</a></li><li><a href="it/" hreflang="it" lang="it">Italiano</a></li><li><a href="nl/" hreflang="nl" lang="nl">Nederlands</a></li><li><a href="pl/" hreflang="pl" lang="pl">Polski</a></li><li><a href="da/" hreflang="da" lang="da">Dansk</a></li><li><a href="sv/" hreflang="sv" lang="sv">Svenska</a></li><li><a href="ru/" hreflang="ru" lang="ru">Русский</a></li><li><a href="id/" hreflang="id" lang="id">Bahasa Indonesia</a></li><li><a href="hi/" hreflang="hi" lang="hi">हिन्दी</a></li><li><a href="ja/" hreflang="ja" lang="ja">日本語</a></li><li><a href="ko/" hreflang="ko" lang="ko">한국어</a></li><li><a href="zh-Hans/" hreflang="zh-Hans" lang="zh-Hans">简体中文</a></li><li><a href="zh-HK/" hreflang="zh-HK" lang="zh-HK">繁體中文（香港）</a></li></ul>
+    </nav>
   </footer>
 </main>
 
 <script>
 (function () {
   "use strict";
+  var T = {"unit": "ms", "stage_start": "Click to start", "stage_start_hint": "You can also press Space or Enter.", "progress": "Trial {n} of {total}", "history_empty": "No series yet. Kept in this browser only.", "history_line": "mean {mean} ms · median {median} ms", "history_false": "false starts: {n}", "waiting": "Wait for it…", "now": "Now!", "spoken_wait": "Wait for the color change.", "spoken_now": "Now", "too_soon": "Too soon", "too_soon_hint": "Wait for the color change. Click to try this trial again.", "spoken_too_soon": "Too soon. Click to try again.", "next_hint": "Click for the next trial.", "spoken_ms": "{ms} milliseconds", "finished_hint": "Your mean over {total} trials. Click to run a new series.", "spoken_finished": "Series complete. Mean {ms} milliseconds."};
   var TRIALS = 10;
   var MIN_WAIT = 1200, MAX_WAIT = 3800;
   var HISTORY_KEY = "reaction-test-history";
   var HISTORY_MAX = 10;
+  var LANG = document.documentElement.lang || "en";
+
+  function t(key, values) {
+    var s = T[key] || "";
+    if (values) {
+      Object.keys(values).forEach(function (k) { s = s.split("{" + k + "}").join(String(values[k])); });
+    }
+    return s;
+  }
 
   var stage = document.getElementById("stage");
   var big = document.getElementById("stage-big");
@@ -197,11 +233,11 @@
 
   function startTrial() {
     clearTimeout(timer);
-    setStage("waiting", "Wait for it…", "", "Wait for the color change.");
+    setStage("waiting", t("waiting"), "", t("spoken_wait"));
     var delay = MIN_WAIT + Math.random() * (MAX_WAIT - MIN_WAIT);
     timer = setTimeout(function () {
       goAt = performance.now();
-      setStage("go", "Now!", "", "Now");
+      setStage("go", t("now"), "", t("spoken_now"));
     }, delay);
   }
 
@@ -221,7 +257,7 @@
   function render() {
     var cells = readingsEl.querySelectorAll(".v");
     for (var i = 0; i < TRIALS; i++) cells[i].textContent = times[i] != null ? round(times[i]) : "—";
-    progress.textContent = "Trial " + times.length + " of " + TRIALS;
+    progress.textContent = t("progress", { n: times.length, total: TRIALS });
     var s = stats(times);
     out.mean.textContent = s ? round(s.mean) : "—";
     out.median.textContent = s ? round(s.median) : "—";
@@ -238,15 +274,15 @@
       clearTimeout(timer);
       falseStarts++;
       render();
-      setStage("early", "Too soon", "Wait for the color change. Click to try this trial again.", "Too soon. Click to try again.");
+      setStage("early", t("too_soon"), t("too_soon_hint"), t("spoken_too_soon"));
     } else if (phase === "go") {
-      var t = performance.now() - goAt;
-      times.push(t);
+      var ms = performance.now() - goAt;
+      times.push(ms);
       render();
       if (times.length >= TRIALS) {
         finish();
       } else {
-        setStage("result", round(t) + " ms", "Click for the next trial.", round(t) + " milliseconds");
+        setStage("result", round(ms) + " " + t("unit"), t("next_hint"), t("spoken_ms", { ms: round(ms) }));
       }
     } else if (phase === "finished") {
       resetSeries();
@@ -256,8 +292,8 @@
 
   function finish() {
     var s = stats(times);
-    setStage("finished", round(s.mean) + " ms", "Your mean over " + TRIALS + " trials. Click to run a new series.",
-      "Series complete. Mean " + round(s.mean) + " milliseconds.");
+    setStage("finished", round(s.mean) + " " + t("unit"), t("finished_hint", { total: TRIALS }),
+      t("spoken_finished", { ms: round(s.mean) }));
     saveHistory(s);
   }
 
@@ -266,7 +302,7 @@
     times = [];
     falseStarts = 0;
     render();
-    setStage("idle", "Click to start", "You can also press Space or Enter.", "");
+    setStage("idle", t("stage_start"), t("stage_start_hint"), "");
   }
 
   // History: per-browser convenience only. Storage may be unavailable.
@@ -284,17 +320,22 @@
     list = list || loadHistory();
     historyEl.innerHTML = "";
     if (!list.length) {
-      historyEl.innerHTML = '<li class="empty">No series yet. Kept in this browser only.</li>';
+      var empty = document.createElement("li");
+      empty.className = "empty";
+      empty.textContent = t("history_empty");
+      historyEl.appendChild(empty);
       clearBtn.hidden = true;
       return;
     }
     list.forEach(function (h) {
       var li = document.createElement("li");
-      var date = new Date(h.d).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+      var date;
+      try { date = new Date(h.d).toLocaleString(LANG, { dateStyle: "medium", timeStyle: "short" }); }
+      catch (e) { date = new Date(h.d).toLocaleString(); }
       var left = document.createElement("span");
       left.textContent = date;
       var right = document.createElement("span");
-      right.textContent = "mean " + h.mean + " ms · median " + h.median + " ms" + (h.early ? " · " + h.early + " false start" + (h.early > 1 ? "s" : "") : "");
+      right.textContent = t("history_line", { mean: h.mean, median: h.median }) + (h.early ? " · " + t("history_false", { n: h.early }) : "");
       li.appendChild(left);
       li.appendChild(right);
       historyEl.appendChild(li);
